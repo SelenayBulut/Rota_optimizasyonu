@@ -158,8 +158,9 @@ Süre: 19 dakika (örnek bir süre hesaplaması) <br>
 Açıklama: En hızlı rota da aynı aktarma noktalarına sahiptir, ancak süre açısından daha kısa bir yolculuk yapılır.
 
 
+## Projeyi Geliştirme Fikirleri
 
-
+Bu projede  ağa dinamik yapı kazandırılarak kullanıcıların yeni hatlar ve istasyonlar eklemesine imkan tanınabilir.Ayrıca metro hatlarının bakımda ya da kapalı olduğu durumlar da sisteme dahil edilerek, bu tür güncel bilgiler rota hesaplamalarına entegre edilebilir. Metro dışında otobüs, tramvay gibi farklı ulaşım araçları da sisteme dahil edilerek, en hızlı veya en ekonomik rota alternatifleri sunulabilir. Yoğun saatlerdeki kalabalık durumlarına göre, kullanıcılara daha uygun ve alternatif rotalar önerilerek daha verimli bir ulaşım deneyimi sağlanabilir.
 
 
 
