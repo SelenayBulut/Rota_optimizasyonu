@@ -81,15 +81,81 @@ Eğer mevcut istasyon hedefe ulaşıyorsa, algoritma işlemi sonlandırır ve en
 
 En hızlı rota ve bu rotanın toplam süresi döndürülür.
 
-   ```python
-         return None
-
-   
-
-
-
+    ```python
+          return None
 
 ## Örnek Kullanım ve Test Sonuçları
+Metro Ağı Yapısı
+Programda aşağıdaki metro hatları ve istasyonlar tanımlanmıştır:
+
+- Kırmızı Hat
+  -  K1: Kızılay
+  -  K2: Ulus
+  -  K3: Demetevler
+  - K4: OSB
+
+- Mavi Hat
+  - M1: AŞTİ
+  - M2: Kızılay (Aktarma noktası)
+  - M3: Sıhhiye
+  - M4: Gar
+
+- Turuncu Hat
+  - T1: Batıkent
+  - T2: Demetevler (Aktarma noktası)
+  - T3: Gar (Aktarma noktası)
+  - T4: Keçiören
+
+Test Sonuçları
+
+1. AŞTİ'den OSB'ye
+- En Az Aktarmalı Rota:
+
+Başlangıç: AŞTİ (Mavi Hat)
+Hedef: OSB (Kırmızı Hat)
+Rota: AŞTİ → Kızılay (Aktarma) → Demetevler → OSB
+Açıklama: Bu rota, AŞTİ'den başlayarak, Kızılay'da aktarma yaparak Kırmızı Hat’a geçer ve hedef istasyon olan OSB'ye ulaşır. 1 aktarma yapılır.
+
+- En Hızlı Rota:
+
+Başlangıç: AŞTİ (Mavi Hat) <br>
+Hedef: OSB (Kırmızı Hat) <br>
+Rota: AŞTİ → Kızılay → Demetevler → OSB <br>
+Süre: 21 dakika (örnek bir süre hesaplaması) <br>
+Açıklama: En hızlı rota da aynı şekilde bir aktarma gerektiren yolculuğu ifade eder, ancak bu rota toplamda daha kısa sürede tamamlanır.
+
+2.  Batıkent'ten Keçiören'e
+   
+- En Az Aktarmalı Rota:
+
+Başlangıç: Batıkent (Turuncu Hat) <br>
+Hedef: Keçiören (Turuncu Hat) <br>
+Rota: Batıkent → Demetevler → Gar → Keçiören <br>
+Açıklama: Batıkent ve Keçiören aynı hat üzerinde yer aldıkları için aktarma yapılmaz ve doğrudan bu hat üzerinden seyahat edilir. <br>
+
+- En Hızlı Rota:
+
+Başlangıç: Batıkent (Turuncu Hat) <br>
+Hedef: Keçiören (Turuncu Hat) <br>
+Rota: Batıkent → Demetevler → Gar → Keçiören <br>
+Süre: 21 dakika (örnek bir süre hesaplaması) <br>
+Açıklama: Hızlı rota, doğrudan aynı hattı kullanarak Batıkent’ten Keçiören’e ulaşır ve aktarma yapılmaz.
+
+3.  Keçiören'den AŞTİ'ye
+- En Az Aktarmalı Rota:
+
+Başlangıç: Keçiören (Turuncu Hat) <br>
+Hedef: AŞTİ (Mavi Hat) <br>
+Rota: Keçiören → Gar (Aktarma) → Kızılay → AŞTİ <br>
+Açıklama: Keçiören’den Gar istasyonuna kadar Turuncu Hat kullanılır ve Gar’dan sonra Mavi Hat’a geçilir. Bu rotada 2 aktarma yapılır: biri Gar’da, diğeri Kızılay’da.
+
+- En Hızlı Rota:
+
+Başlangıç: Keçiören (Turuncu Hat) <br>
+Hedef: AŞTİ (Mavi Hat) <br>
+Rota: Keçiören → Gar (Aktarma) → AŞTİ <br>
+Süre: 19 dakika (örnek bir süre hesaplaması) <br>
+Açıklama: En hızlı rota da aynı aktarma noktalarına sahiptir, ancak süre açısından daha kısa bir yolculuk yapılır.
 
 
 
