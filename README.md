@@ -51,38 +51,50 @@ Eğer mevcut istasyon, hedef istasyonu ile eşleşirse, algoritma işlemi sonlan
   A* algoritması, genişlik öncelikli arama ile birlikte, her istasyonun hedefe olan tahmini mesafesini dikkate alır. Bu algoritma, en hızlı rotayı bulmaya yöneliktir ve her istasyonu seçerken maliyeti (gerçek maliyet ve tahmin edilen maliyet) dikkate alır.A* algoritması ise, her istasyonun hedefe olan tahmini mesafesini göz önünde bulundurarak en hızlı rotayı bulur. Bu, zaman açısından verimli bir rota arayışı için kullanışlıdır, çünkü her bir istasyonun maliyetini ve hedefe olan uzaklığını dikkate alır.
 
 A* Algoritmasının İşleyişi:
-1. Başlangıç İstasyonunu Kuyruğa Ekleyin:
-Başlangıç istasyonu, A* algoritmasında f-skoru sıfır olarak kuyruğa eklenir. Bu skor, her istasyon için toplam maliyeti gösterir.
 
-    ```python
-         pq = [(0, id(baslangic), baslangic, [baslangic])]
+1. Girdi Kontrolü:
 
-2. Hedefe Giden Maliyet Hesaplanır:
-A*, her bir istasyon için g-skoru (gerçek maliyet) ve h-skoru (hedefe tahmini maliyet) hesaplar. Aşağıdaki gibi f-skoru (g + h) hesaplanır:
+Algoritma, önce başlangıç istasyonu (`baslangic_id`) ve hedef istasyonu (`hedef_id`) için `self.istasyonlar` sözlüğünde geçerliliği kontrol eder.
+Eğer herhangi bir istasyon bulunamazsa, `None` döndürülür, yani rota bulunamaz.
 
-    ```python
-        toplam_sure = g_skoru + h_skoru          
- 
-3. Komşu İstasyonları ve Maliyetleri Hesaplayın:
-Mevcut istasyonun komşuları sırasıyla işlenir. Her bir komşunun maliyeti, kuyruktaki önceki istasyonlardan gelen maliyetle birleştirilir.
+2. Başlangıç Durumu:
 
-    ```python
-          for komsu, sure in mevcut.komsular:
-    heapq.heappush(pq, (toplam_sure + sure, id(komsu), komsu, yol + [komsu]))
- 
-4. Hedefe Ulaşana Kadar Devam Et:
-Eğer mevcut istasyon hedefe ulaşıyorsa, algoritma işlemi sonlandırır ve en hızlı rotayı döndürür.
+`baslangic` ve `hedef`  istasyonları, self.istasyonlar sözlüğünden alınır.
+Bir öncelik kuyruğu (`pq`), başlangıç istasyonunu içeren, toplam süreyi 0 olarak başlatan ve sadece başlangıç istasyonunu içeren bir yol listesi ile başlatılır.
+Ziyaret edilen istasyonları ve bu istasyonlara ulaşmak için geçen süreyi izlemek için bir `ziyaret_edildi` sözlüğü oluşturulur.
 
-   ```python
-          if mevcut == hedef:
-    return yol, toplam_sure
+3. Ana Döngü (Öncelik Kuyruğu):
+   
+Öncelik kuyruğu, her zaman toplam seyahat süresi en düşük olan istasyonu işleme alır. Kuyruk, şu tuple'ı içerir:
 
-5. Sonuç:
+- `toplam_sure`: İstasyona ulaşmak için geçen toplam süre,
+- `id(baslangic)`: İstasyonun benzersiz kimliği,
+- `mevcut`: Şu anki istasyon,
+- `yol`: Şu ana kadar izlenen yol.
 
-En hızlı rota ve bu rotanın toplam süresi döndürülür.
+Döngü, kuyrukta işlem yapılacak istasyon kalmayana kadar devam eder.
 
-    ```python
-          return None
+4. Mevcut İstasyonun İşlenmesi:
+
+Kuyruktan, toplam süresi en düşük olan istasyon çıkarılır.
+Eğer bu istasyon daha önce ziyaret edilip, daha kısa bir süreyle geçildiyse, istasyon geçilir.
+Aksi takdirde, istasyon `ziyaret_edildi` listesine eklenir ve geçilen süre kaydedilir.
+
+5. Hedef İstasyonuna Ulaşılması:
+
+Eğer mevcut istasyon hedef istasyonuysa, hedefe ulaşılmış demektir. Bu durumda, izlenen yol ve toplam süre döndürülür.
+
+6. Komşu İstasyonlara Geçiş:
+
+Mevcut istasyonun komşuları (bağlantılı istasyonlar) üzerinde işlem yapılır. Her bir komşu, toplam süreye eklenir ve yeni bir yol olarak kuyruğa eklenir.
+Kuyruğa yeni istasyonlar, toplam süreye göre sıralanarak eklenir.
+
+7. Sonuç:
+
+Eğer hedefe ulaşmak mümkünse, yol ve toplam süre döndürülür.
+Eğer hedefe ulaşmak mümkün değilse, `None` döndürülür.
+     
+
 
 ## Örnek Kullanım ve Test Sonuçları
 Metro Ağı Yapısı
@@ -113,15 +125,15 @@ Test Sonuçları
 
 Başlangıç: AŞTİ (Mavi Hat)
 Hedef: OSB (Kırmızı Hat)
-Rota: AŞTİ → Kızılay (Aktarma) → Demetevler → OSB
+Rota: AŞTİ → Kızılay (Aktarma) →Ulus → Demetevler → OSB
 Açıklama: Bu rota, AŞTİ'den başlayarak, Kızılay'da aktarma yaparak Kırmızı Hat’a geçer ve hedef istasyon olan OSB'ye ulaşır. 1 aktarma yapılır.
 
 - En Hızlı Rota:
 
 Başlangıç: AŞTİ (Mavi Hat) <br>
 Hedef: OSB (Kırmızı Hat) <br>
-Rota: AŞTİ → Kızılay → Demetevler → OSB <br>
-Süre: 21 dakika (örnek bir süre hesaplaması) <br>
+Rota: AŞTİ → Kızılay → Ulus → Demetevler → OSB <br>
+Süre: 25 dakika  <br>
 Açıklama: En hızlı rota da aynı şekilde bir aktarma gerektiren yolculuğu ifade eder, ancak bu rota toplamda daha kısa sürede tamamlanır.
 
 2.  Batıkent'ten Keçiören'e
@@ -146,14 +158,14 @@ Açıklama: Hızlı rota, doğrudan aynı hattı kullanarak Batıkent’ten Keç
 
 Başlangıç: Keçiören (Turuncu Hat) <br>
 Hedef: AŞTİ (Mavi Hat) <br>
-Rota: Keçiören → Gar (Aktarma) → Kızılay → AŞTİ <br>
+Rota: Keçiören → Gar (Aktarma) → Sıhhiye → Kızılay → AŞTİ <br>
 Açıklama: Keçiören’den Gar istasyonuna kadar Turuncu Hat kullanılır ve Gar’dan sonra Mavi Hat’a geçilir. Bu rotada 2 aktarma yapılır: biri Gar’da, diğeri Kızılay’da.
 
 - En Hızlı Rota:
 
 Başlangıç: Keçiören (Turuncu Hat) <br>
 Hedef: AŞTİ (Mavi Hat) <br>
-Rota: Keçiören → Gar (Aktarma) → AŞTİ <br>
+Rota: Keçiören → Gar (Aktarma) → Sıhhiye → Kızılay → AŞTİ <br>
 Süre: 19 dakika (örnek bir süre hesaplaması) <br>
 Açıklama: En hızlı rota da aynı aktarma noktalarına sahiptir, ancak süre açısından daha kısa bir yolculuk yapılır.
 
